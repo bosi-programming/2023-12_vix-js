@@ -21,14 +21,16 @@ class TodoInput extends HTMLElement {
 
     form.addEventListener('submit', (e) => {
       e.preventDefault();
-
-      const data = new FormData(e.target as HTMLFormElement);
-      console.log(data, e.target);
-
+      const target = e.target as unknown as HTMLFormElement
+      const data = new FormData(target);
       this.dispatchEvent(new CustomEvent('add', { detail: data.get('todo') }));
-      const target = e.target as HTMLFormElement
       target.reset()
     });
+  }
+
+  disconnectedCallback() {
+    const form = this.shadow.querySelector('form');
+    form?.removeEventListener('submit', () => {});
   }
 }
 

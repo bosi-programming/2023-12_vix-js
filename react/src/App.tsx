@@ -1,15 +1,12 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 import './App.css'
 
-let id = 0;
-
 function App() {
   const [todos, setTodos] = useState([{ id: 0, text: 'Learn React', done: false }])
-  console.log(todos)
   const todoFormRef = useRef<HTMLFormElement>(null);
 
   const addTodo = useCallback((text: string) => {
-    id++
+    const id = Math.max(...todos.map(todo => todo.id)) + 1
     setTodos([...todos, {
       id,
       text,
@@ -17,14 +14,40 @@ function App() {
     }])
   }, [todos])
 
+  const removeTodo = useCallback((id: number) => {
+    setTodos(todos => todos.filter(todo => todo.id !== id));
+  }, [])
+
+  const checkTodo = useCallback((id: number) => {
+    setTodos(todos => todos.map(todo => (todo.id === id ? { ...todo, done: !todo.done } : todo)));
+  }, [])
+
   useEffect(() => {
     todoFormRef.current?.addEventListener('add', (e) => {
       addTodo(e.detail)
     })
   }, [todoFormRef, addTodo])
 
+  const todoItemRef = useCallback((node: HTMLDivElement) => {
+    if (node !== null) {
+      node.addEventListener('delete', (e) => {
+        removeTodo(e.detail.id)
+      })
+      node.addEventListener('toggle', (e) => {
+        checkTodo(e.detail.id)
+      })
+    }
+  }, [checkTodo, removeTodo])
+
   return (
-    <todo-input ref={todoFormRef} />
+    <>
+      <todo-input ref={todoFormRef} />
+      <ul>
+        {todos.map(todo => (
+          <todo-item key={todo.id} ref={todoItemRef} itemId={todo.id} text={todo.text} completed={todo.done} />
+        ))}
+      </ul>
+    </>
   )
 }
 
