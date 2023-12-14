@@ -28,9 +28,9 @@ class TodoItem extends HTMLElement implements TodoItemProps {
   }
 
   connectedCallback() {
-    this.itemId = Number(this.getAttribute('itemId')) || 0;
-    this.text = this.getAttribute('text') || '';
-    this.completed = this.getAttribute('completed') === 'true' ? true : false;
+    this.itemId = Number(this.getAttribute('data-itemId')) || 0;
+    this.text = this.getAttribute('data-text') || '';
+    this.completed = this.getAttribute('data-completed') === 'true' ? true : false;
     const { itemId, text, completed } = this;
 
     this.shadow.innerHTML = `
