@@ -4,6 +4,12 @@ export interface TodoItemProps {
   completed: boolean;
 }
 
+export interface TodoItemAttributes {
+  "data-itemId": number;
+  "data-text": string;
+  "data-completed": boolean;
+}
+
 class TodoItem extends HTMLElement implements TodoItemProps {
   itemId: number = 0;
   text: string = '';

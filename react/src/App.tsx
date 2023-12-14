@@ -44,7 +44,7 @@ function App() {
       <todo-input ref={todoFormRef} />
       <ul>
         {todos.map(todo => (
-          <todo-item key={todo.id} ref={todoItemRef} itemId={todo.id} text={todo.text} completed={todo.done} />
+          <todo-item key={todo.id} ref={todoItemRef} data-itemId={todo.id} data-text={todo.text} data-completed={todo.done} />
         ))}
       </ul>
     </>
